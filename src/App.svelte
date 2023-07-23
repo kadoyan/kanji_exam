@@ -6,6 +6,7 @@
 	//fonts
 	let font = "yu-font";
 	let choosed = [];
+	let showAnswer = false;
 
 	async function fetchData() {
 		const response = await fetch("./ninen.json");
@@ -44,11 +45,13 @@
 			{/each}
 			{/if}
 		</div>
+		<h2>答え</h2>
+		<label for="show_answer"><input type="checkbox" name="show_answer" id="show_answer" bind:checked={showAnswer}>答えも印刷する</label>
 	</div>
 
 	<div class="paper {font}">
 		<div class="question">
-			<h3>問題</h3>
+			<h3 class="noprint">問題</h3>
 			{#if choosed.length <= 0}
 				<p>漢字を選んでください。</p>
 			{:else}
@@ -64,13 +67,15 @@
 				{/each}
 			{/if}
 		</div>
-		<div class="answer">
-			<h3>回答</h3>
-			{#each choosed as item, index}
-				<div class="item">
-					<span class="index">({index+1})</span>{item.kanji}
-				</div>
-			{/each}
-		</div>
+		{#if showAnswer}
+			<div class="answer">
+				<h3 class="noprint">回答</h3>
+				{#each choosed as item, index}
+					<div class="item">
+						<span class="index">({index+1})</span>{item.kanji}
+					</div>
+				{/each}
+			</div>
+		{/if}
 	</div>
 </main>
