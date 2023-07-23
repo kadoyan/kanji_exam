@@ -1,0 +1,116 @@
+// fonts
+
+.yu-font {
+	font-family: "游教科書体", "YuKyokasho", serif;
+}
+
+.ud-font {
+	font-family: "UDデジタル教科書体 ProN R", serif;
+}
+
+body {}
+
+h2 {
+	font-size: 1.2em;
+}
+h3 {
+	font-size: 1.8em;
+}
+
+p {
+	margin: 0;
+}
+
+.paper {
+	width: 100%;
+	writing-mode: vertical-rl;
+	text-orientation: upright;
+	display: flex;
+	flex-direction: column;
+	.question {
+		display: block;
+		.item {
+			display: inline-block;
+			flex-shrink: 1;
+			margin-left: 2em;
+			margin-bottom: 4em;
+		}
+	}
+	.answer {
+		margin-right: 2em;
+		padding-left: 2em;
+		border-right: 1px dashed #aaa;
+		.item {
+			display: inline-block;
+			font-size: 2.2em;
+			margin-left: 0.8em;
+			margin-bottom: 1.5em;
+		}
+	}
+	.index {
+		display: inline-block;
+		margin-bottom: 0.5em;
+		font-size: 0.8em;
+		text-combine-upright: all;
+	}
+	.kana {
+		font-size: 1.4em;
+	}
+	.kanji_box {
+		display: flex;
+		align-items: flex-start;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		border-top: 1px solid #888;
+		border-bottom: 0;
+	}
+	.kanji {
+		position: relative;
+		width: 6em;
+		height: 6em;
+		border: 1px solid #888;
+		border-top: 0;
+		&::before,
+		&::after {
+			content: "";
+			position: absolute;
+		}
+		&::before {
+			width: 0;
+			height: 100%;
+			top: 0;
+			left: 50%;
+			border-left: 1px dotted #ddd;
+		}
+		&::after {
+			width: 100%;
+			height: 0;
+			left: 0;
+			top: 50%;
+			border-top: 1px dotted #ddd;
+		} 
+	}
+}
+
+.list {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	grid-gap: 0;
+	/* 列間の余白 */
+	.item {
+		padding: 10px;
+		line-height: 1;
+	}
+}
+
+label {
+	&:hover {
+		cursor: pointer;
+	}
+}
+
+@media print {
+	.noprint {
+		display: none;
+	}
+}
