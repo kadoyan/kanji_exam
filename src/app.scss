@@ -126,16 +126,10 @@ label {
 }
 
 @media print {
-	@page {
-		// padding: 20mm;
-		margin: 20mm 10mm;
-		size: A4 landscape;
-	}
-
 	.noprint {
 		display: none;
 	}
-
 	.paper {
+		justify-content: space-between;
 	}
 }
