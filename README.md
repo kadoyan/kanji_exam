@@ -5,4 +5,4 @@ JSONファイルに漢字と読みを設定し、それをもとに一覧を作�
 プリントアウト、フォントについてはローカル依存です。  
 フォントは、Morisawa Fontsでインストールできます。
 
-[サンプルサイト](http://www.testan.net/kanji_renshu/index.html)
+[サンプルサイト https://kadoyan.github.io/kanji_exam/](https://kadoyan.github.io/kanji_exam/)
