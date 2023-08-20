@@ -9,7 +9,7 @@
 	let showAnswer = false;
 
 	async function fetchData() {
-		const response = await fetch("./ninen.json");
+		const response = await fetch("./kanji.json");
 		data = await response.json();
 		isLoading = false;
 		chooseKanji(data);
