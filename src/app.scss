@@ -153,7 +153,6 @@ label {
 		font-size: 10px;
 		box-sizing: border-box;
 		padding: 10mm 20mm;
-		break-after: page;
 		writing-mode: vertical-rl;
 		text-orientation: upright;
 	}
@@ -161,6 +160,7 @@ label {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
 		grid-template-rows: repeat(auto-fit, minmax(100px, 1fr));
+		break-after: page;
 		.item {
 			display: block;
 		}
