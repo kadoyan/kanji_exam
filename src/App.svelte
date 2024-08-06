@@ -2,6 +2,7 @@
 
 	let data = null;
 	let isLoading = true;
+	const max_choosed = 20
 
 	//fonts
 	let font = "yu-font";
@@ -30,16 +31,21 @@
 		<p class="yu-font"><label for="font-yu"><input type="radio" name="font" id="font-yu" value="yu-font" bind:group={font}>游教科書体</label></p>
 		<p class="ud-font"><label for="font-ud"><input type="radio" name="font" id="font-ud" value="ud-font" bind:group={font}>UDデジタル教科書体 ProN R</label></p>
 		
-		<h2>漢字候補</h2>
+		<h2>漢字候補（最大{max_choosed}個{#if choosed.length > 0}／{choosed.length}個 選択中{/if}）</h2>
 		<div class="list {font}">
 			{#if isLoading}
 				<p>Loading...</p>
 			{:else}
-			{#each data.ninen as word (word.yomi)}
+			{#each data.sannen as word (word.yomi)}
 			<p class="item">
 				<label for="{word.yomi}">
-				<input type="checkbox" name="kanji" value="{word}" id="{word.yomi}" bind:group={choosed}>
-				{word.kanji}（{word.yomi}）
+				<input type="checkbox" name="kanji"
+					value="{word}"
+					id="{word.yomi}"
+					bind:group={choosed}
+					disabled={choosed.length === max_choosed && !choosed.includes(word)}
+				>
+				{word.kanji}<span class="kana">（{word.yomi}）</span>
 				</label>
 			</p>
 			{/each}
