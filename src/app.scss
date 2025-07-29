@@ -8,9 +8,7 @@
 	font-family: "UDデジタル教科書体 ProN R", serif;
 }
 
-body {
-	
-}
+body {}
 
 h2 {
 	font-size: 1.2em;
@@ -28,9 +26,11 @@ p {
 	padding-bottom: 2em;
 	margin-bottom: 3em;
 }
+
 select {
 	font-size: 1em;
 }
+
 button {
 	padding: 0.5em 1em;
 	font-size: 1em;
@@ -137,10 +137,12 @@ button {
 	border: 1px solid #ccc;
 	background-color: #f9f9f9;
 	border-radius: 6px;
+
 	.item {
 		padding: 10px;
 		line-height: 1;
 	}
+
 	.kana {
 		display: block;
 		font-size: 0.6em;
@@ -159,14 +161,17 @@ label {
 		width: 297mm;
 		height: 210mm;
 	}
+
 	.noprint {
 		display: none;
 	}
+
 	.paper {
 		display: block;
 		box-sizing: border-box;
 		overflow-x: visible;
 	}
+
 	.question,
 	.answer {
 		width: 100%;
@@ -177,11 +182,13 @@ label {
 		writing-mode: vertical-rl;
 		text-orientation: upright;
 	}
+
 	.question {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
 		grid-template-rows: repeat(auto-fit, minmax(100px, 1fr));
 		break-after: page;
+
 		.item {
 			display: block;
 		}
