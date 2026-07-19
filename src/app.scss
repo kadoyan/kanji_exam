@@ -50,7 +50,7 @@ button {
 	.item {
 		display: inline-block;
 		flex-shrink: 1;
-		margin-left: 2em;
+		margin-left: 3em;
 		margin-bottom: 2em;
 	}
 }
@@ -87,6 +87,36 @@ button {
 
 .kana {
 	font-size: 1.2em;
+}
+
+.sentence {
+	display: inline-flex;
+	// align-items: flex-start;
+	align-items: center;
+	gap: 0.35em;
+}
+
+.sentence_text {
+	font-size: 1.6em;
+	line-height: 1.3;
+}
+
+.blank_with_yomi {
+	position: relative;
+	display: inline-flex;
+	align-items: flex-start;
+	gap: 0.2em;
+
+	.kana {
+		position: absolute;
+		right: -1.4rem;
+		display: flex;
+		justify-content: center;
+		height: 100%;
+		font-size: 1em;
+		line-height: 1.2;
+		letter-spacing: 0.2rem;
+	}
 }
 
 .kanji_box {
@@ -156,10 +186,26 @@ label {
 }
 
 @media print {
-	body {
+	@page {
 		size: A4 landscape;
+		margin: 0;
+	}
+
+	html,
+	body {
+		margin: 0;
+		padding: 0;
 		width: 297mm;
-		height: 210mm;
+		height: auto;
+		overflow: hidden;
+	}
+
+	main {
+		margin: 0;
+		padding: 0;
+		width: 297mm;
+		height: auto;
+		overflow: hidden;
 	}
 
 	.noprint {
@@ -167,15 +213,26 @@ label {
 	}
 
 	.paper {
+		position: relative;
 		display: block;
 		box-sizing: border-box;
-		overflow-x: visible;
+		overflow: hidden;
+		width: 297mm;
+		height: 200mm;
+	}
+
+	.paper:has(.answer) {
+		height: 410mm;
 	}
 
 	.question,
 	.answer {
-		width: 100%;
-		max-height: 100%;
+		position: absolute;
+		left: 0;
+		width: 287mm;
+		height: 200mm;
+		max-height: none;
+		overflow: hidden;
 		font-size: 10px;
 		box-sizing: border-box;
 		padding: 10mm 20mm;
@@ -184,13 +241,34 @@ label {
 	}
 
 	.question {
+		top: 0;
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
 		grid-template-rows: repeat(auto-fit, minmax(100px, 1fr));
-		break-after: page;
 
 		.item {
 			display: block;
 		}
+	}
+
+	.sentence {
+		gap: 0.5em;
+	}
+
+	.sentence_text {
+		font-size: 1.7em;
+	}
+
+	.blank_with_yomi {
+		gap: 0.35em;
+
+		.kana {
+			font-size: 1.2em;
+		}
+	}
+
+	.answer {
+		top: 210mm;
+		margin-right: 0;
 	}
 }

@@ -1,24 +1,51 @@
 <script lang="ts">
-	let data = null;
+	type KanjiItem = {
+		kanji: string;
+		yomi: string;
+	};
+
+	type QuestionPart =
+		| {
+				type: "text";
+				text: string;
+		  }
+		| {
+				type: "blank";
+				text: string;
+		  };
+
+	let data: KanjiItem[] = [];
 	let isLoading = true;
 	const max_choosed = 20;
 
 	//fonts
 	let font = "yu-font";
-	let choosed: Element[] = [];
+	let choosed: KanjiItem[] = [];
 	let showAnswer = false;
 
 	async function fetchData() {
-		const response = await fetch("./kanji.json");
+		const response = await fetch("./kanji_v2.json");
 		data = await response.json();
 		isLoading = false;
-		chooseKanji(data);
 	}
 	fetchData();
 
-	function chooseKanji(data: JSON) {
-		const keys = Object.keys(data);
-		const length = keys.length;
+	function parseQuestionParts(item: KanjiItem): QuestionPart[] {
+		const match = item.kanji.match(/^(.*?)\{(.+?)\}(.*)$/);
+		if (!match) {
+			return [{ type: "blank", text: item.kanji }];
+		}
+
+		const [, before, blank, after] = match;
+		return [
+			...(before ? [{ type: "text" as const, text: before }] : []),
+			{ type: "blank" as const, text: blank },
+			...(after ? [{ type: "text" as const, text: after }] : []),
+		];
+	}
+
+	function answerText(item: KanjiItem) {
+		return item.kanji.replace(/[{}]/g, "");
 	}
 
 	function randomChoice() {
@@ -30,8 +57,8 @@
 			num = Number(numOfChoose.value);
 		}
 		if (num > 0) {
-			const newChoosed: Element[] = [];
-			let indices = new Set();
+			const newChoosed: KanjiItem[] = [];
+			let indices = new Set<number>();
 			// ランダムにインデックスを選択
 			let loop = num;
 			if (data.length < num) {
@@ -52,12 +79,23 @@
 	}
 
 	// カスタムJSON読み込み
-	async function uploadJson(e) {
-		const file = e.target.files[0];
+	async function uploadJson(e: Event) {
+		const input = e.target as HTMLInputElement;
+		const file = input.files?.[0];
+		if (!file) {
+			return false;
+		}
+
 		const reader = new FileReader();
 		reader.onload = function (evt) {
+			const result = evt.target?.result;
+			if (typeof result !== "string") {
+				return false;
+			}
+
 			try {
-				data = JSON.parse(evt.target.result);
+				data = JSON.parse(result);
+				choosed = [];
 			} catch (e) {
 				return false;
 			}
@@ -124,9 +162,9 @@
 			{#if isLoading}
 				<p>Loading...</p>
 			{:else}
-				{#each data as word (word.yomi)}
+				{#each data as word}
 					<p class="item">
-						<label for={word.yomi}>
+						<label>
 							<input
 								type="checkbox"
 								name="kanji"
@@ -136,7 +174,7 @@
 								disabled={choosed.length === max_choosed &&
 									!choosed.includes(word)}
 							/>
-							{word.kanji}<span class="kana">（{word.yomi}）</span
+							{answerText(word)}<span class="kana">（{word.yomi}）</span
 							>
 						</label>
 					</p>
@@ -162,12 +200,21 @@
 			{:else}
 				{#each choosed as item, index}
 					<div class="item">
-						<div class="kana">
-							<span class="index">({index + 1})</span>{item.yomi}
-						</div>
-						<div class="kanji_box">
-							{#each Array.from( { length: item.kanji.length }, ) as _, i}
-								<div class="kanji"></div>
+						<span class="index">({index + 1})</span>
+						<div class="sentence">
+							{#each parseQuestionParts(item) as part}
+								{#if part.type === "text"}
+									<span class="sentence_text">{part.text}</span>
+								{:else}
+									<span class="blank_with_yomi">
+										<span class="kana">{item.yomi}</span>
+										<span class="kanji_box">
+											{#each Array.from({ length: part.text.length }) as _}
+												<span class="kanji"></span>
+											{/each}
+										</span>
+									</span>
+								{/if}
 							{/each}
 						</div>
 					</div>
@@ -179,7 +226,7 @@
 				<h3 class="noprint">回答</h3>
 				{#each choosed as item, index}
 					<div class="item">
-						<span class="index">({index + 1})</span>{item.kanji}
+						<span class="index">({index + 1})</span>{answerText(item)}
 					</div>
 				{/each}
 			</div>
